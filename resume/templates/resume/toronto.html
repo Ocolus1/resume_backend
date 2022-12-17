@@ -1,0 +1,202 @@
+{% extends './base.html' %} {% load static %} {% block title %} Toronto Template
+{% endblock title %} {% block body %}
+<style type="text/css">
+	.wrapper {
+		/* width: 50%;
+		margin: 0 auto;
+		border: 1px solid black;
+		padding: 1rem; */
+	}
+	.background {
+		background-color: #ededed;
+		border-radius: 15px;
+	}
+	.section_one {
+		display: flex;
+		align-items: center;
+		margin-bottom: 0.7rem;
+	}
+	.sec_one_div2 {
+		margin-left: 4rem;
+	}
+	.font-bold {
+		font-weight: 700;
+		font-size: 2.5em;
+		padding: 0;
+		margin: 0.7rem;
+	}
+	.font-bold2 {
+		font-weight: 700;
+		padding-top: 0;
+		margin-top: 0.3rem;
+	}
+	.section_two {
+		display: flex;
+		margin-bottom: 3rem;
+	}
+	.sec_two_div1 {
+		width: 50rem;
+	}
+	.sec_two_div2 {
+		margin-left: 1.5rem;
+	}
+	.sec_two_div2_inner {
+		padding: 0.5rem 1rem;
+	}
+	.sec_two_h5 {
+		font-weight: 700;
+		font-size: 1.1em;
+		margin-top: 0;
+		margin-bottom: 0.5rem;
+	}
+	.sec_two_p1 {
+		margin: 0;
+	}
+	.section_three {
+		display: block;
+		height: 100%;
+		margin-bottom: 1rem;
+	}
+	.section_three_div1 {
+		margin-right: 3rem;
+	}
+	.section_three_div2 {
+		/* display: inline-block; */
+		/* border: 1px solid black;
+        float: left;
+        width: 15rem; */
+	}
+	.clear {
+		clear: both;
+		margin-bottom: 0.4rem;
+	}
+	.section_three_div2_inner {
+		padding: 0.5rem 1rem;
+		border-radius: 15px;
+	}
+	.sec_three_h2 {
+		font-weight: 700;
+		font-size: 1.8rem;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.sec_three_h4 {
+		font-weight: 700;
+		font-size: 1.4rem;
+		color: #fff;
+		margin-top: 0.8rem;
+		margin-bottom: 0;
+		background-color: #000;
+	}
+	.sec_three_inner {
+		margin-bottom: 2.1rem;
+	}
+</style>
+<div class="wrapper" style="font-family: roboto">
+	<!-- <div class="row"> -->
+
+	<div class="section_one">
+		<div class="sec_one_div1">
+			<img
+				class=""
+				src="{{ user.profile_pic.url }}"
+				width="156px"
+				height="153px"
+			/>
+		</div>
+		<div class="sec_one_div2">
+			<h1 class="font-bold">{{user.first_name}}</h1>
+			<h1 class="font-bold">{{user.last_name}}</h1>
+		</div>
+	</div>
+	<div class="section_two">
+		<div class="sec_two_div1">
+			<h5 class="sec_two_h5">{{user.title}}</h5>
+			<p class="sec_two_p1">{{user.email}}</p>
+			<p class="sec_two_p1">{{user.phone}}</p>
+			<p class="sec_two_p1">{{user.city}}</p>
+			<p class="sec_two_p1">{{user.country}}</p>
+		</div>
+		<div class="sec_two_div2">
+			<div class="background sec_two_div2_inner">
+				<h2 class="font-bold2">Profile</h2>
+				<div class="">
+					{{user.profile}}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section_three">
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<div class="section_three_div1">
+							<div class="sec_three_inner">
+								<h2 class="sec_three_h2">Employment History</h2>
+								{% if employment_history != None %}
+									{% for data in employment_history %}
+										<div class="">
+											<h4 class="sec_three_h4">
+												{{data.role}} at {{data.company}},
+												{{data.city}}
+											</h4>
+											<p class="">
+												<span>{{data.start_date}} - </span>
+												<span>{{data.end_date}}</span>
+											</p>
+											<div class="">
+												{{data.description}}
+											</div>
+										</div>
+									{% endfor %}
+								{% endif %}
+							</div>
+							<div>
+								<h2 class="sec_three_h2" style="margin-top: 0">
+									Education
+								</h2>
+								{% if education_resume != None %}
+									{% for data in education_resume %}
+										<div class="">
+											<h4 class="sec_three_h4">
+												{{data.degree}} at {{data.school}}, 
+												{{data.city}}
+											</h4>
+											<p class="">
+												<span>{{data.start_date}} - </span>
+												<span>{{data.end_date}}</span>
+											</p>
+										</div>
+									{% endfor %}
+								{% endif %}
+							</div>
+						</div>
+					</td>
+					<td style="width:35%;vertical-align: top; padding-top: 0;">
+						<div class="section_three_div2">
+							<div
+								class="section_three_div2_inner"
+								style="background-color: #ededed"
+							>
+								<div class="">
+									<h2 class="font-bold2">Skills</h2>
+									{% if skills_resume != None %}
+										{% for data in skills_resume %}
+											<p>{{data.label}}</p>
+										{% endfor %}
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="clear"></div>
+	</div>
+	<!-- </div> -->
+</div>
+
+{% endblock body%}
