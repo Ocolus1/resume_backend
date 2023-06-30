@@ -16,7 +16,7 @@ import json
 from users.models import User
 from .models import ResumeProfile, EmploymentHistory, Education, Website, Skills
 from .serializers import ResumeProfileSerializer, EmploymentHistorySerializer, EducationSerializer, WebsiteSerializer, SkillsSerializer
-
+# weasyprint resume/templates/resume/wu.html tmp/sad.pdf
 
 class ResumeModelViewSet(ModelViewSet):
     queryset = ResumeProfile.objects.all()
@@ -103,16 +103,23 @@ class ResumeModelViewSet(ModelViewSet):
             website_resume =  Website.objects.filter(website_resume=resume)
         if Skills.objects.filter(skills_resume=resume).exists():
             skills_resume =  Skills.objects.filter(skills_resume=resume)
-        css = CSS(string='@page { size: A4; margin: .2cm }')
         html_string = render_to_string('resume/toronto.html', 
-        { 
-            "user" : resume,
-            "employment_history": employment_history,
-            "education_resume": education_resume,
-            "website_resume": website_resume,
-            "skills_resume": skills_resume,
-        }
+            { 
+                "user" : resume,
+                "employment_history": employment_history,
+                "education_resume": education_resume,
+                "website_resume": website_resume,
+                "skills_resume": skills_resume,
+            }
         )
-        HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf('tmp/mypdf.pdf', 
-        stylesheets=[css], presentational_hints=True, optimize_size=('fonts', 'images'))
+
+        # Write the HTML string to a temporary file.
+        with open('tmp/resume.html', 'w') as f:
+            f.write(html_string)
+        
+        # Generate the PDF from the temporary file.
+        HTML(filename='tmp/resume.html', base_url=request.build_absolute_uri()).write_pdf('tmp/mypdf.pdf', presentational_hints=True, optimize_size=('fonts', 'images'))
+
+        # Delete the temporary HTML file after use (optional).
+        os.remove('tmp/resume.html')
         return FileResponse(open('tmp/mypdf.pdf', 'rb'), content_type='application/pdf')
